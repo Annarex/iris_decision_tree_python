@@ -72,3 +72,22 @@ gcloud ai-platform versions describe $VERSION_NAME \
 
 gcloud ai-platform local predict --model-dir=. --json-instances=input.json --framework=SCIKIT_LEARN
 gcloud ai-platform predict --model=scikit_iris_randomforest_temp --version=v1 --json-instances=input.json
+
+
+gcloud api service account authentication
+-----------------------------------------
+create service account
+
+gcloud iam service-accounts create <lowercase-hyphen-separated-name>
+
+Grant permissions to the service account
+
+gcloud projects add-iam-policy-binding [PROJECT_ID] --member "serviceAccount:[NAME]@[PROJECT_ID].iam.gserviceaccount.com" --role "roles/owner"
+
+Generate the key file
+
+gcloud iam service-accounts keys create [FILE_NAME].json --iam-account [NAME]@[PROJECT_ID].iam.gserviceaccount.com
+
+Create environment variable that points to FILE_NAME
+
+export GOOGLE_APPLICATION_CREDENTIALS="/home/user/<dir>"
