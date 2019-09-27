@@ -17,7 +17,7 @@ gcloud init
 gcloud projects list
 gcloud projects delete <ProjectID>
 
-gcloud ai-platform models list
+
 gcloud components update
 
 sudo apt-get update && sudo apt-get --only-upgrade install kubectl google-cloud-sdk google-cloud-sdk-app-engine-grpc google-cloud-sdk-pubsub-emulator google-cloud-sdk-app-engine-go google-cloud-sdk-firestore-emulator google-cloud-sdk-cloud-build-local google-cloud-sdk-datastore-emulator google-cloud-sdk-app-engine-python google-cloud-sdk-cbt google-cloud-sdk-bigtable-emulator google-cloud-sdk-app-engine-python-extras google-cloud-sdk-datalab google-cloud-sdk-app-engine-java
@@ -39,6 +39,36 @@ pip install scipy
 pip install sklearn
 pip install tensorflow
 python iris.py
+
+pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+python predict.py
+
+
+gcloud ai-platform models list
+gcloud ai-platform models create "[YOUR-MODEL-NAME]"
+
+
+MODEL_DIR="gs://your_bucket_name/"
+VERSION_NAME="[YOUR-VERSION-NAME]"
+MODEL_NAME="[YOUR-MODEL-NAME]"
+FRAMEWORK="[YOUR-FRAMEWORK_NAME]"
+Create the version:
+
+gcloud ai-platform versions create $VERSION_NAME \
+  --model $MODEL_NAME \
+  --origin $MODEL_DIR \
+  --runtime-version=1.14 \
+  --framework $FRAMEWORK \
+  --python-version=3.5
+
+Creating the version takes a few minutes. When it is ready, you should see the following output:
+
+Creating version (this might take a few minutes)......done.
+Get information about your new version:
+
+gcloud ai-platform versions describe $VERSION_NAME \
+  --model $MODEL_NAME
+
 
 gcloud ai-platform local predict --model-dir=. --json-instances=input.json --framework=SCIKIT_LEARN
 gcloud ai-platform predict --model=scikit_iris_randomforest_temp --version=v1 --json-instances=input.json

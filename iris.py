@@ -3,6 +3,7 @@ from sklearn import svm
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.pipeline import Pipeline
 
 from sklearn.externals import joblib
@@ -16,8 +17,13 @@ iris = datasets.load_iris()
 
 pipeline = Pipeline([
       ('feature_selection', SelectKBest(chi2, k=2)),
-      ('classification', RandomForestClassifier())
+      ('classification', DecisionTreeClassifier())
     ])
+
+#pipeline = Pipeline([
+#      ('feature_selection', SelectKBest(chi2, k=2)),
+#      ('classification', RandomForestClassifier())
+#    ])
 
 pipeline.fit(iris.data, iris.target)
 
