@@ -15,24 +15,33 @@ from sklearn.externals import joblib
 #iris = datasets.load_iris()
 #print(iris)
 
-# 1. "sepal_length"
-# 2. "sepal_width"
-# 3. "petal_length"
-# 4. "petal_width"
+# 1. "sepal.length"
+# 2. "sepal.width"
+# 3. "petal.length"
+# 4. "petal.width"
 # 5. "variety"
 
+# 1. Number of times pregnant
+# 2. Plasma glucose concentration a 2 hours in an oral glucose tolerance test
+# 3. Diastolic blood pressure (mm Hg)
+# 4. Triceps skin fold thickness (mm)
+# 5. 2-Hour serum insulin (mu U/ml)
+# 6. Body mass index (weight in kg/(height in m)^2)
+# 7. Diabetes pedigree function
+# 8. Age (years)
+# 9. Class variable (0 or 1)
 
-col_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'variety']
+col_names = ['pregnant', 'glucose', 'bp', 'skin', 'insulin', 'bmi', 'pedigree', 'age', 'label']
 
 # load dataset
-iris = pd.read_csv("data/iris.csv", header=None, names=col_names)
+pima = pd.read_csv("data/pima-indians.csv", header=None, names=col_names)
 
 #print(pima.head())
 
 #split dataset in features and target variable
-feature_cols = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
-X = iris[feature_cols] # Features
-y = iris.variety # Target variable
+feature_cols = ['pregnant', 'insulin', 'bmi', 'age','glucose','bp','pedigree']
+X = pima[feature_cols] # Features
+y = pima.label # Target variable
 
 # Split dataset into training set and test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) # 70% training and 30% test
@@ -60,4 +69,4 @@ y_pred = clf.predict(X_test)
 #pipeline.fit(iris.data, iris.target)
 
 # Export the classifier to a file
-joblib.dump(clf, 'iris-model.joblib')
+joblib.dump(clf, 'prima-model.joblib')
