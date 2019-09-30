@@ -10,6 +10,7 @@ from sklearn.externals import joblib
 
 # Load the Iris dataset
 iris = datasets.load_iris()
+print(iris)
 
 # Set up a pipeline with a feature selection preprocessor that
 # selects the top 2 features to use.
