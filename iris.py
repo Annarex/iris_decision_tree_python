@@ -43,32 +43,32 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 # Create Decision Tree classifer object
 
-criterion_var = ["entropy","gini"]
-criterion_var_chosen = criterion_var[0]
-max_depth_var = 2
+criterion = ["entropy","gini"]
 
-clf = DecisionTreeClassifier(criterion=criterion_var_chosen, max_depth=max_depth_var)
+for crit in criterion:
+    for max_depth_var in range(1,10):
+        clf = DecisionTreeClassifier(criterion=crit, max_depth=max_depth_var)
 
-# Train Decision Tree Classifer
-clf = clf.fit(X_train,y_train)
+        # Train Decision Tree Classifer
+        clf = clf.fit(X_train,y_train)
 
-# Export the classifier to a file
-joblib.dump(clf, 'models/iris/iris-model-{}-{}.joblib'.format(criterion_var_chosen,max_depth_var))
+        # Export the classifier to a file
+        joblib.dump(clf, 'models/iris/iris-model-{}-depth{}.joblib'.format(crit,max_depth_var))
 
-#Predict the response for test dataset
-y_pred = clf.predict(X_test)
+        #Predict the response for test dataset
+        y_pred = clf.predict(X_test)
 
-# Model Accuracy, how often is the classifier correct?
-print("Accuracy for criterion {} and max depth {}:".format(criterion_var_chosen,max_depth_var),metrics.accuracy_score(y_test, y_pred))
+        # Model Accuracy, how often is the classifier correct?
+        print("Accuracy for iris model with criterion {} and max depth {}:".format(crit,max_depth_var),metrics.accuracy_score(y_test, y_pred))
 
-# Show the tree
-dot_data = StringIO()
-export_graphviz(clf, out_file=dot_data,
+        # Show the tree
+        dot_data = StringIO()
+        export_graphviz(clf, out_file=dot_data,
                 filled=True, rounded=True,
                 special_characters=True,feature_names = feature_cols,class_names=['Setosa','Versicolor','Virginica'])
-graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
-graph.write_png('data/output/iris-{}-{}.png'.format(criterion_var_chosen,max_depth_var))
-Image(graph.create_png())
+        graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
+        graph.write_png('data/output/iris/iris-{}-depth{}.png'.format(crit,max_depth_var))
+        Image(graph.create_png())
 
 
 
