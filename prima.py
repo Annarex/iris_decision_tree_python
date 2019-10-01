@@ -58,7 +58,7 @@ for crit in criterion:
         y_pred = clf.predict(X_test)
 
         # Model Accuracy, how often is the classifier correct?
-        print("Accuracy for prima model with criterion {} and max depth {}:".format(crit,max_depth_var),metrics.accuracy_score(y_test, y_pred))
+        print("Accuracy for prima model with criterion {} and max depth {}:".format(crit,max_depth_var), metrics.accuracy_score(y_test, y_pred))
 
         # Show the tree
         dot_data = StringIO()
