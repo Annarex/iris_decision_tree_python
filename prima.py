@@ -46,11 +46,12 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 # Create Decision Tree classifer object
 criterion = ["entropy","gini"]
+depth = 20
 entropy_accuracy_array = []
 gini_accuracy_array = []
 
 for crit in criterion:
-    for max_depth_var in range(1,15):
+    for max_depth_var in range(1,depth + 1):
         clf = DecisionTreeClassifier(criterion=crit, max_depth=max_depth_var)
 
         # Train Decision Tree Classifer
@@ -78,7 +79,7 @@ for crit in criterion:
         Image(graph.create_png())
         #end depth for loop
 
-depth_array = range(1,15)
+depth_array = range(1,depth + 1)
 print(depth_array)
 print(entropy_accuracy_array)
 print(gini_accuracy_array)
