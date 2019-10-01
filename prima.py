@@ -11,15 +11,10 @@ from sklearn import metrics #Import scikit-learn metrics module for accuracy cal
 
 from sklearn.externals import joblib
 
-# Load the Iris dataset from sklearn
-#iris = datasets.load_iris()
-#print(iris)
-
-# 1. "sepal.length"
-# 2. "sepal.width"
-# 3. "petal.length"
-# 4. "petal.width"
-# 5. "variety"
+from sklearn.tree import export_graphviz
+from sklearn.externals.six import StringIO
+from IPython.display import Image
+import pydotplus
 
 # 1. Number of times pregnant
 # 2. Plasma glucose concentration a 2 hours in an oral glucose tolerance test
@@ -34,7 +29,7 @@ from sklearn.externals import joblib
 col_names = ['pregnant', 'glucose', 'bp', 'skin', 'insulin', 'bmi', 'pedigree', 'age', 'label']
 
 # load dataset
-pima = pd.read_csv("data/pima-indians.csv", header=None, names=col_names)
+pima = pd.read_csv("data/input/pima-indians.csv", header=None, names=col_names)
 
 #print(pima.head())
 
@@ -52,21 +47,20 @@ clf = DecisionTreeClassifier()
 # Train Decision Tree Classifer
 clf = clf.fit(X_train,y_train)
 
+# Export the classifier to a file
+joblib.dump(clf, 'prima-model.joblib')
+
 #Predict the response for test dataset
 y_pred = clf.predict(X_test)
 
+# Model Accuracy, how often is the classifier correct?
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
-# Set up a pipeline with a feature selection preprocessor that
-# selects the top 2 features to use.
-# The pipeline then uses a RandomForestClassifier to train the model.
-
-#pipeline = Pipeline([
-#      ('feature_selection', SelectKBest(chi2, k=2)),
-#      ('classification', DecisionTreeClassifier())
-#    ])
-
-
-#pipeline.fit(iris.data, iris.target)
-
-# Export the classifier to a file
-joblib.dump(clf, 'prima-model.joblib')
+# Show the tree
+dot_data = StringIO()
+export_graphviz(clf, out_file=dot_data,
+                filled=True, rounded=True,
+                special_characters=True,feature_names = feature_cols,class_names=['Setosa','Versicolor','Virginica'])
+graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
+graph.write_png('data/output/prima.png')
+Image(graph.create_png())
