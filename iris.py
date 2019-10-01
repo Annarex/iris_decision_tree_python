@@ -26,7 +26,6 @@ import pydotplus
 # 4. "petal_width"
 # 5. "variety"
 
-
 col_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'variety']
 
 # load dataset
@@ -43,19 +42,24 @@ y = iris.variety # Target variable
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) # 70% training and 30% test
 
 # Create Decision Tree classifer object
-clf = DecisionTreeClassifier()
+
+criterion_var = ["entropy","gini"]
+criterion_var_chosen = criterion_var[0]
+max_depth_var = 2
+
+clf = DecisionTreeClassifier(criterion=criterion_var_chosen, max_depth=max_depth_var)
 
 # Train Decision Tree Classifer
 clf = clf.fit(X_train,y_train)
 
 # Export the classifier to a file
-joblib.dump(clf, 'iris-model.joblib')
+joblib.dump(clf, 'models/iris/iris-model-{}-{}.joblib'.format(criterion_var_chosen,max_depth_var))
 
 #Predict the response for test dataset
 y_pred = clf.predict(X_test)
 
 # Model Accuracy, how often is the classifier correct?
-print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+print("Accuracy for criterion {} and max depth {}:".format(criterion_var_chosen,max_depth_var),metrics.accuracy_score(y_test, y_pred))
 
 # Show the tree
 dot_data = StringIO()
@@ -63,7 +67,7 @@ export_graphviz(clf, out_file=dot_data,
                 filled=True, rounded=True,
                 special_characters=True,feature_names = feature_cols,class_names=['Setosa','Versicolor','Virginica'])
 graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
-graph.write_png('data/output/iris.png')
+graph.write_png('data/output/iris-{}-{}.png'.format(criterion_var_chosen,max_depth_var))
 Image(graph.create_png())
 
 
