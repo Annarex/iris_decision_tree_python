@@ -38,6 +38,14 @@ sudo apt install python-pip
 pip install scipy
 pip install sklearn
 pip install tensorflow
+pip install IPython
+pip install pydotplus
+sudo apt install graphviz
+sudo apt-get install python-dev
+pip install matplotlib
+apt-get install python-tk
+
+
 python iris.py
 
 pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
