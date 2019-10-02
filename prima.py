@@ -49,7 +49,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 
 criterion = ["entropy","gini"]
-depth = 6
+depth = 4
 entropy_accuracy_array = []
 gini_accuracy_array = []
 
