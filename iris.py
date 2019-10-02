@@ -102,7 +102,7 @@ plt.plot(depth_array, entropy_accuracy_array, color='g')
 plt.plot(depth_array, gini_accuracy_array, color='orange')
 plt.xlabel('Tree Depth')
 plt.ylabel('Accuracy')
-plt.title('Entropy (green) vs Gini (orange) accuracy vs tree depth')
+plt.title('Entropy (green) vs Gini (orange) accuracy vs tree depth for iris dataset')
 plt.show()
 
 #----------------------------------------------------------------------------------------------------------------------------
