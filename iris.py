@@ -56,11 +56,11 @@ gini_accuracy_array = []
 
 path = '/home/haliax/Projects/iris_decision_tree_python'
 
-files = glob.glob(path + '/data/output/iris/*')
+files = glob.glob('{}/data/output/iris/*'.format(path))
 for f in files:
     os.remove(f)
 
-files = glob.glob(path + '/models/iris/*')
+files = glob.glob('{}/models/iris/*'.format(path))
 for f in files:
     os.remove(f)
 
