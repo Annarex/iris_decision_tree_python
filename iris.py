@@ -19,6 +19,9 @@ import numpy as np
 import array
 import matplotlib.pyplot as plt
 
+import os
+import glob
+
 # Load the Iris dataset from sklearn
 #iris = datasets.load_iris()
 #print(iris)
@@ -44,15 +47,27 @@ y = iris.variety # Target variable
 # Split dataset into training set and test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) # 70% training and 30% test
 
-# Create Decision Tree classifer object
+
 
 criterion = ["entropy","gini"]
-depth = 20
+depth = 6
 entropy_accuracy_array = []
 gini_accuracy_array = []
 
+path = '/home/haliax/Projects/iris_decision_tree_python'
+
+files = glob.glob(path + '/data/output/iris/*')
+for f in files:
+    os.remove(f)
+
+files = glob.glob(path + '/models/iris/*')
+for f in files:
+    os.remove(f)
+
 for crit in criterion:
     for max_depth_var in range(1,depth + 1):
+
+        # Create Decision Tree classifer object
         clf = DecisionTreeClassifier(criterion=crit, max_depth=max_depth_var)
 
         # Train Decision Tree Classifer
