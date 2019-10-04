@@ -45,13 +45,16 @@ X = pima[feature_cols] # Features
 y = pima.label # Target variable
 
 # Split dataset into training set and test set
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) # 70% training and 30% test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1) # 70% training and 30% test
 
 
 criterion = ["entropy","gini"]
 depth = 4
-entropy_accuracy_array = []
-gini_accuracy_array = []
+
+entropy_accuracy_array_test = []
+entropy_accuracy_array_train = []
+gini_accuracy_array_train = []
+gini_accuracy_array_test = []
 
 path = '/home/haliax/Projects/iris_decision_tree_python'
 
@@ -78,13 +81,17 @@ for crit in criterion:
         joblib.dump(clf, 'models/prima/prima-model-{}-depth{}.joblib'.format(crit,max_depth_var))
 
         #Predict the response for test dataset
-        y_pred = clf.predict(X_test)
+        y_pred_test = clf.predict(X_test)
+        y_pred_train = clf.predict(X_train)
 
         # Model Accuracy, how often is the classifier correct?
-        accuracy = metrics.accuracy_score(y_test, y_pred).round(3)
-        print("Accuracy for prima model with criterion {} and max depth {}:".format(crit,max_depth_var), accuracy)
+        accuracy_test = metrics.accuracy_score(y_test, y_pred_test).round(3)
+        accuracy_train = metrics.accuracy_score(y_test, y_pred_train).round(3)
+        print("Accuracy for prima model with criterion {} and max depth {} with test data:".format(crit,max_depth_var), accuracy_test)
+        print("Accuracy for prima model with criterion {} and max depth {} with train data:".format(crit,max_depth_var), accuracy_train)
 
-        entropy_accuracy_array.append(accuracy) if crit == "entropy" else gini_accuracy_array.append(accuracy)
+        entropy_accuracy_array_test.append(accuracy_test) if crit == "entropy" else gini_accuracy_array_test.append(accuracy_test)
+        entropy_accuracy_array_train.append(accuracy_train) if crit == "entropy" else gini_accuracy_array_train.append(accuracy_train)
 
         # Show the tree
         dot_data = StringIO()
@@ -96,11 +103,15 @@ for crit in criterion:
 
 depth_array = range(1,depth + 1)
 print(depth_array)
-print(entropy_accuracy_array)
-print(gini_accuracy_array)
+print(entropy_accuracy_array_test)
+print(entropy_accuracy_array_train)
+print(gini_accuracy_array_test)
+print(gini_accuracy_array_train)
 
-plt.plot(depth_array, entropy_accuracy_array, color='g')
-plt.plot(depth_array, gini_accuracy_array, color='orange')
+plt.plot(depth_array, entropy_accuracy_array_test, color='green')
+plt.plot(depth_array, entropy_accuracy_array_train, color='blue')
+plt.plot(depth_array, gini_accuracy_array_test, color='orange')
+plt.plot(depth_array, gini_accuracy_array_train, color='red')
 plt.xlabel('Tree Depth')
 plt.ylabel('Accuracy')
 plt.title('Entropy (green) vs Gini (orange) accuracy vs tree depth for prima dataset')
